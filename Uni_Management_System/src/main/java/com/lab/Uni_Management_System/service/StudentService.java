@@ -91,7 +91,7 @@ public class StudentService {
 
         // Update password only if a new password is provided
         if (request.password() != null && !request.password().isBlank()) {
-            student.setPassword(passwordEncoder.encode(request.password()));
+            student.setPassword(request.password());
         }
 
         Student updatedStudent = studentRepository.save(student);
