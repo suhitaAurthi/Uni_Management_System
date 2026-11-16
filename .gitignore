@@ -1,0 +1,15 @@
+# Build output
+target/
+Uni_Management_System/target/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+
+# JVM crash logs
+hs_err_pid*.log
+replay_pid*.log
+
+# Local secrets
+.env

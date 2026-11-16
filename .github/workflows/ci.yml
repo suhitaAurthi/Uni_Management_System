@@ -10,6 +10,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    # The Maven project (pom.xml) lives in the Uni_Management_System subfolder of this repo
+    defaults:
+      run:
+        working-directory: Uni_Management_System
+
     # Starts a MySQL database so the repository and integration tests can run
     services:
       mysql:
@@ -35,6 +40,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
+          cache-dependency-path: Uni_Management_System/pom.xml
 
       - name: Run tests with Maven
         run: mvn -B clean test
