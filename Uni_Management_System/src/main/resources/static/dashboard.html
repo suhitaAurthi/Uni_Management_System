@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard - University Management System</title>
+</head>
+<body>
+<table width="100%" cellpadding="20" cellspacing="0">
+    <tr>
+        <td>
+            <h1>University Management System</h1>
+            <p id="nav"></p>
+            <hr>
+
+            <h2>Dashboard</h2>
+            <p>Choose what you want to manage. You only see the sections your role is allowed to use.</p>
+
+            <table border="1" cellpadding="12" cellspacing="0">
+                <thead>
+                <tr>
+                    <th align="left">Section</th>
+                    <th align="left">What you can do</th>
+                </tr>
+                </thead>
+                <tbody id="sections"></tbody>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<script src="js/api.js"></script>
+<script>
+    if (requireLogin()) {
+        renderNav("nav");
+
+        const descriptions = {
+            admins: "View, add, edit and delete administrator accounts",
+            teachers: "View, add, edit and delete teacher accounts",
+            students: "View, add, edit and delete student accounts"
+        };
+
+        const tbody = document.getElementById("sections");
+        for (const resource of ROLE_ACCESS[getRole()] || []) {
+            const row = document.createElement("tr");
+
+            const linkCell = document.createElement("td");
+            const link = document.createElement("a");
+            link.href = resource + ".html";
+            link.textContent = "Manage " + RESOURCE_LABELS[resource];
+            linkCell.appendChild(link);
+
+            const descCell = document.createElement("td");
+            descCell.textContent = descriptions[resource];
+
+            row.appendChild(linkCell);
+            row.appendChild(descCell);
+            tbody.appendChild(row);
+        }
+    }
+</script>
+</body>
+</html>

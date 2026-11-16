@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admins - University Management System</title>
+</head>
+<body>
+<table width="100%" cellpadding="20" cellspacing="0">
+    <tr>
+        <td>
+            <h1>University Management System</h1>
+            <p id="nav"></p>
+            <hr>
+
+            <h2>Manage Admins</h2>
+            <p id="message"></p>
+
+            <div id="content">
+                <fieldset>
+                    <legend id="form-title">Add Admin</legend>
+                    <form id="record-form">
+                        <table cellpadding="8" cellspacing="0">
+                            <tbody id="form-fields"></tbody>
+                        </table>
+                        <p>
+                            &nbsp;<button type="submit" id="save-button">Create Admin</button>
+                            &nbsp;<button type="button" id="cancel-button" hidden>Cancel edit</button>
+                        </p>
+                    </form>
+                </fieldset>
+
+                <br>
+
+                <fieldset>
+                    <legend>All Admins</legend>
+                    <p>&nbsp;<button type="button" id="refresh-button">Refresh list</button></p>
+                    <table border="1" cellpadding="10" cellspacing="0" width="100%">
+                        <thead id="table-head"></thead>
+                        <tbody id="table-body"></tbody>
+                    </table>
+                    <br>
+                </fieldset>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<script src="js/api.js"></script>
+<script src="js/crud.js"></script>
+<script>
+    // Field names must match the AdminCreateRequest / AdminUpdateRequest DTOs
+    setupCrudPage({
+        resource: "admins",
+        singular: "Admin",
+        apiUrl: "/api/admins",
+        fields: [
+            { name: "name", label: "Name", type: "text" },
+            { name: "email", label: "Email", type: "email" },
+            { name: "password", label: "Password", type: "password" },
+            { name: "designation", label: "Designation", type: "text" }
+        ]
+    });
+</script>
+</body>
+</html>

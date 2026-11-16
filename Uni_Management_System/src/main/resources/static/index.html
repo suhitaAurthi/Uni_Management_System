@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - University Management System</title>
+</head>
+<body>
+<!-- No CSS: the outer table's cellpadding gives the whole page its padding -->
+<table width="100%" cellpadding="20" cellspacing="0">
+    <tr>
+        <td>
+            <h1>University Management System</h1>
+            <hr>
+
+            <h2>Login</h2>
+            <p id="message"></p>
+
+            <fieldset>
+                <legend>Sign in with your account</legend>
+                <form id="login-form">
+                    <table cellpadding="8" cellspacing="0">
+                        <tr>
+                            <td><label for="email">Email</label></td>
+                            <td><input type="email" id="email" name="username" size="35" required autofocus autocomplete="username"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="password">Password</label></td>
+                            <td><input type="password" id="password" name="password" size="35" required autocomplete="current-password"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><button type="submit" id="login-button">Login</button></td>
+                        </tr>
+                    </table>
+                </form>
+            </fieldset>
+        </td>
+    </tr>
+</table>
+
+<script src="js/api.js"></script>
+<script>
+    const message = document.getElementById("message");
+    const form = document.getElementById("login-form");
+    const loginButton = document.getElementById("login-button");
+
+    if (new URLSearchParams(window.location.search).has("expired")) {
+        showMessage(message, "Your session has expired. Please log in again.", true);
+    }
+
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        loginButton.disabled = true;
+        showMessage(message, "");
+
+        try {
+            // Spring Security's form login expects form fields, not JSON
+            const response = await fetch("/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: new URLSearchParams({
+                    username: form.elements["username"].value.trim(),
+                    password: form.elements["password"].value
+                })
+            });
+
+            const data = await response.json().catch(() => ({}));
+
+            if (response.ok) {
+                saveLogin(data.email, data.role);
+                window.location.href = "dashboard.html";
+            } else {
+                showMessage(message, data.message || "Login failed.", true);
+            }
+        } catch (error) {
+            showMessage(message, "Could not reach the server. Is the backend running?", true);
+        } finally {
+            loginButton.disabled = false;
+        }
+    });
+</script>
+</body>
+</html>
